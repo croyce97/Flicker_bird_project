@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "bird.h"
+#include "pipe.h"
 #include "defs.h"
 
 typedef std::chrono::system_clock::time_point time_point;
@@ -22,6 +23,7 @@ class Game
     public:
         SDL_Texture *tex_backgroundD;
         SDL_Texture *tex_backgroundN;
+        SDL_Texture *tex_ground;
         SDL_Texture *tex_playerUp;
         SDL_Texture *tex_playerMid;
         SDL_Texture *tex_playerDown;
@@ -30,9 +32,17 @@ class Game
         SDL_Texture* tex_gameover;
         SDL_Texture* tex_getreddy;
         SDL_Texture* tex_guild;
+        SDL_Texture* tex_score;
+        SDL_Texture* tex_pause;
+        SDL_Texture* tex_resume;
+        SDL_Texture* tex_vang;
+        SDL_Texture* tex_bac;
+        SDL_Texture* tex_dong;
+        SDL_Texture* tex_dung;
 
 
         TTF_Font* font;
+
         Mix_Chunk* die;
         Mix_Chunk* hit;
         Mix_Chunk* swooshing;
@@ -42,7 +52,8 @@ class Game
         bool isRunning;
         bool gamePaused;
         bool pausedButtonClicked;
-Game(const char *title, int _width, int _height);
+
+        Game(const char *title, int _width, int _height);
         
         void Start();
         void Close();
