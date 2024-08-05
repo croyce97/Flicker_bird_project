@@ -1,14 +1,13 @@
 #ifndef PIPE_H_
 #define PIPE_H_
 
-#include <SDL2/SDL.h>
 #include "defs.h"
+#include <SDL2/SDL.h>
 
 struct Pipe
 {
     SDL_Rect top_src, top_dst;
     SDL_Rect bottom_dst, bottom_src;
-
     bool passed;
 
     Pipe(int x, int height)
@@ -17,7 +16,7 @@ struct Pipe
         bottom_dst.y = HEIGHT - height;
         bottom_dst.w = PIPE_WIDTH;
         bottom_dst.h = height;
-
+        
         bottom_src.x = 0;
         bottom_src.y = 0;
         bottom_src.w = PIPE_WIDTH_SRC;
@@ -31,7 +30,6 @@ struct Pipe
         top_src.x = top_src.y = 0;
         top_src.w = PIPE_WIDTH_SRC;
         top_src.h = top_dst.h;
-
         passed = true;
     }
 
