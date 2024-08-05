@@ -13,7 +13,7 @@ Game::Game(const char *title, int width, int height)
     gameover = false;
 
     ground1 = -WIDTH / 2;
-    ground2 = WIDTH   / 2;
+    ground2 = WIDTH  / 2;
 
     srand(time(NULL));
 }
@@ -39,9 +39,9 @@ void Game::init()
         pipes.pop_front();
     }
 
-    Pipe* firstPipe = new Pipe(WIDTH * 2 + PIPE_DISTANCE, rand() % 301 + 150);
-    Pipe* secondPipe = new Pipe(firstPipe->bottom_dst.x + PIPE_DISTANCE, rand() % 301 + 150);
-    Pipe* thirdPipe = new Pipe(secondPipe->bottom_dst.x + PIPE_DISTANCE, rand() % 301 + 150);
+    Pipe* firstPipe = new Pipe(WIDTH * 2 + PIPE_DISTANCE, rand() % 302 + 150);
+    Pipe* secondPipe = new Pipe(firstPipe->bottom_dst.x + PIPE_DISTANCE, rand() % 302 + 150);
+    Pipe* thirdPipe = new Pipe(secondPipe->bottom_dst.x + PIPE_DISTANCE, rand() % 302 + 150);
 
     pipes.push_back(firstPipe);
     pipes.push_back(secondPipe);
@@ -52,8 +52,6 @@ void Game::init()
 
     render();
 }
-
-
 
 void Game::Start()
 {    
