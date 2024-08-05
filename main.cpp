@@ -6,9 +6,7 @@ int main(int argc, char *argv[])
 {
     SDL_Init(SDL_INIT_VIDEO);
     TTF_Init();
-    Game game("Flappy bird made by 22028200", WIDTH, HEIGHT);
-
+    Game game("Flappy bird go go", WIDTH, HEIGHT);
     game.Start();
-
     return 0;
 }
