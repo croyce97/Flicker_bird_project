@@ -9,24 +9,17 @@ class Bird
     private:
         float velocity;
         float acceleration;
-
         SDL_Rect pos;
-
         SDL_Texture *up;
         SDL_Texture *down;
         SDL_Texture *mid;
         SDL_Texture *currentRenderingTexture;
         SDL_Renderer *renderer;
-
         Mix_Chunk* point;
-
         int animationFrames;
-
     public:
         int score;
-
         Bird(SDL_Texture *up, SDL_Texture *mid, SDL_Texture *down, SDL_Renderer *renderer);
-
         void init();
         void render();
         void update(bool jump, float elapsedTime);
