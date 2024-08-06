@@ -40,7 +40,6 @@ class Game
         SDL_Texture* tex_dong;
         SDL_Texture* tex_dung;
 
-
         TTF_Font* font;
 
         Mix_Chunk* die;
