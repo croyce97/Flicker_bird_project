@@ -6,9 +6,7 @@
 
 #define FPS 60
 #define frameDelay 1000 / FPS
-
 #define GRAVITY 80.0f
-
 #define BIRD_WIDTH 55
 #define BIRD_HEIGHT 39
 
