@@ -53,6 +53,7 @@ void Game::init()
     render();
 }
 
+
 void Game::Start()
 {    
     // initialize everything before the game starts
@@ -69,7 +70,7 @@ void Game::Start()
     } else {
         SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
     }
-
+    
     //pipes
     for(Pipe* pipe : pipes)
     {
