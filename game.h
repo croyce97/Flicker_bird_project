@@ -47,7 +47,6 @@ class Game
         Mix_Chunk* swooshing;
         Mix_Chunk* wing;
 
-
         bool isRunning;
         bool gamePaused;
         bool pausedButtonClicked;
