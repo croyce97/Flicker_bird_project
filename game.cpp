@@ -68,14 +68,7 @@ void Game::Start()
     }
     SDL_RenderClear(renderer);
     // background
-    if ((bird->score >= 10 && bird->score <= 20) || (bird->score >= 30 && bird->score <= 40) || (bird->score >= 50 && bird->score <= 60))
-    {
-        SDL_RenderCopy(renderer, tex_backgroundN, NULL, NULL);
-    }
-    else
-    {
-        SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
-    }
+    SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
 
     // pipes
     for (Pipe *pipe : pipes)
@@ -156,33 +149,37 @@ void Game::update(bool jump, float elapsedTime, bool &gameover)
     {
         auto p = *it;
         int pipeSpeed = PIPE_V;
-        if (bird->score >= 11 && bird->score <= 30)
+        if (bird->score >= 8 && bird->score <= 15)
         {
             pipeSpeed = PIPE_V + 1;
         }
-        else if (bird->score >= 31 && bird->score <= 50)
+        else if (bird->score >= 16 && bird->score <= 23)
         {
             pipeSpeed = PIPE_V + 2;
         }
-        else if (bird->score >= 51 && bird->score <= 70)
+        else if (bird->score >= 24 && bird->score <= 31)
         {
             pipeSpeed = PIPE_V + 3;
         }
-        else if (bird->score >= 71 && bird->score <= 90)
+        else if (bird->score >= 31 && bird->score <= 50)
         {
             pipeSpeed = PIPE_V + 4;
         }
-        else if (bird->score > 90)
-        {
-            pipeSpeed = PIPE_V + 5;
-        }
+
         p->bottom_dst.x -= pipeSpeed;
         p->top_dst.x = p->bottom_dst.x;
+
+
+        if (p == pipes.front() && p->bottom_dst.x == 1 && bird->score==0)
+        {
+            bird->score++;
+        }
 
         if (p->bottom_dst.x + p->bottom_dst.w < 0)
         {
             it = pipes.erase(it);
             delete p;
+            bird->score++;
             auto *new_pipe = new Pipe(pipes.back()->bottom_dst.x + PIPE_DISTANCE, rand() % 301 + 150);
             pipes.push_back(new_pipe);
         }
@@ -213,13 +210,17 @@ void Game::gameOver()
     SDL_RenderClear(renderer);
 
     // background
-    if ((bird->score >= 10 && bird->score <= 20) || (bird->score >= 30 && bird->score <= 40) || (bird->score >= 50 && bird->score <= 60))
+    if ((bird->score >= 0 && bird->score <= 7) || (bird->score >= 24 && bird->score <= 31) || (bird->score >= 41 && bird->score <= 55))
     {
-        SDL_RenderCopy(renderer, tex_backgroundN, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
+    }
+    else if ((bird->score >= 8 && bird->score <= 15) || (bird->score >= 32 && bird->score <= 39) || (bird->score >= 56 && bird->score <= 63))
+    {
+        SDL_RenderCopy(renderer, tex_backgroundA, NULL, NULL);
     }
     else
     {
-        SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_backgroundN, NULL, NULL);
     }
 
     // pipes
@@ -288,12 +289,12 @@ void Game::gameOver()
     }
 
     // reder huy chuong
-    if (bird->score >= 0 && bird->score <= 20)
+    if (bird->score >= 0 && bird->score <= 5)
     {
         SDL_Rect rectcu = {WIDTH / 2 - 125, 340, 60, 60};
         SDL_RenderCopy(renderer, tex_dong, NULL, &rectcu);
     }
-    else if (bird->score > 20 && bird->score <= 40)
+    else if (bird->score > 5 && bird->score <= 10)
     {
         SDL_Rect rectsliver = {WIDTH / 2 - 125, 340, 60, 60};
         SDL_RenderCopy(renderer, tex_bac, NULL, &rectsliver);
@@ -407,14 +408,18 @@ void Game::render()
 
 void Game::loadTextures()
 {
-    tex_backgroundD = IMG_LoadTexture(renderer, "image/background-day.png");
+    tex_backgroundD = IMG_LoadTexture(renderer, "image/background-winter.png");
     tex_backgroundN = IMG_LoadTexture(renderer, "image/background-night.png");
     tex_backgroundA = IMG_LoadTexture(renderer, "image/background-afternoon.png");
     tex_pipe = IMG_LoadTexture(renderer, "image/pipe.png");
 
+    // tex_player1Mid = IMG_LoadTexture(renderer, "image/blue-mid.png");
+    // tex_player1Up = IMG_LoadTexture(renderer, "image/purple-up.png");
+    // tex_player1Down = IMG_LoadTexture(renderer, "image/yellow-down.png");
+
     tex_player1Mid = IMG_LoadTexture(renderer, "image/blue-mid.png");
-    tex_player1Up = IMG_LoadTexture(renderer, "image/blue-up.png");
-    tex_player1Down = IMG_LoadTexture(renderer, "image/blue-down.png");
+    tex_player1Up = IMG_LoadTexture(renderer, "image/yellow-up.png");
+    tex_player1Down = IMG_LoadTexture(renderer, "image/purple-down.png");
 
     tex_ground = IMG_LoadTexture(renderer, "image/base.png");
     tex_gameover = IMG_LoadTexture(renderer, "image/gameover.png");
@@ -422,6 +427,7 @@ void Game::loadTextures()
     tex_score = IMG_LoadTexture(renderer, "image/score.jpg");
     tex_pause = IMG_LoadTexture(renderer, "image/pause.jpg");
     tex_resume = IMG_LoadTexture(renderer, "image/resume.jpg");
+
     tex_vang = IMG_LoadTexture(renderer, "image/vangmedal.png");
     tex_bac = IMG_LoadTexture(renderer, "image/bacmedal.png");
     tex_dong = IMG_LoadTexture(renderer, "image/dongmedal.png");
