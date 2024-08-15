@@ -40,54 +40,36 @@ void Bird::update(bool jump, float elapsedTime)
     pos.y += velocity * elapsedTime;
 }
 
-// bool Bird::collisionDetector(Pipe* pipe) {
-//     bool collided = false;
-//     if (pos.x + pos.w > pipe->top_dst.x && pos.x < pipe->top_dst.x + PIPE_WIDTH) {
-//         if (pos.y < pipe->top_dst.y + pipe->top_dst.h || pos.y + pos.h > pipe->bottom_dst.y) {
-//             collided = true;
-//         }
-//     }
-//     else if (pos.x > pipe->top_dst.x + PIPE_WIDTH) {
-//         if (pipe->top_dst.x + PIPE_WIDTH < pos.x && !pipe->passed) {
-//             score++;
-//             Mix_PlayChannel(-1, point, 0);
-//             pipe->passed = true;
-//         }
-//     }
-
-//     if (pos.y + pos.h > HEIGHT - GROUND_HEIGHT || pos.y < 0) {
-//         collided = true;
-//     }
-
-//     return collided;
-// }
 bool Bird::collisionDetector(Pipe* pipe) {
     bool collided = false;
 
-    // Kiểm tra va chạm với ống
     if (pos.x + pos.w > pipe->top_dst.x && pos.x < pipe->top_dst.x + PIPE_WIDTH) {
         if (pos.y < pipe->top_dst.y + pipe->top_dst.h || pos.y + pos.h > pipe->bottom_dst.y) {
-            collided =  true;
+            if (coll) {
+                    coll--; 
+                    if(coll==14){
+                     Mix_PlayChannel(-1, point, 0);
+            }
+            }
+            else {
+                collided = true;
+                }
         }
     }
-    
-    // Tăng điểm nếu Bird đã vượt qua ống mà chưa được tính điểm+ PIPE_WIDTH
-    if ( !pipe->passed && pos.x >= pipe->top_dst.x ) {
-        //score++;
-       // Mix_PlayChannel(-1, point, 0);
+
+    if (!pipe->passed && pos.x >= pipe->top_dst.x) {
         pipe->passed = true;
+        // score ++;
     }
 
-    // Kiểm tra va chạm với mặt đất hoặc vượt khỏi màn hình
-    if (pos.y + pos.h > HEIGHT - GROUND_HEIGHT || pos.y < 0) {
-        collided = true;
+    if (pos.y + pos.h > HEIGHT - GROUND_HEIGHT) { 
+        pos.y = 0;
+    } else if (pos.y < 0) { 
+        pos.y = HEIGHT - GROUND_HEIGHT - pos.h;
     }
 
     return collided;
 }
-
-
-
 
 void Bird::render()
 {
