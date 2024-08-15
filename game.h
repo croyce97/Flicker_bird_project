@@ -20,60 +20,64 @@ typedef std::chrono::system_clock::time_point time_point;
 
 class Game
 {
-    public:
-        SDL_Texture *tex_backgroundD;
-        SDL_Texture *tex_backgroundN;
-        SDL_Texture *tex_ground;
-        SDL_Texture *tex_playerUp;
-        SDL_Texture *tex_playerMid;
-        SDL_Texture *tex_playerDown;
-        SDL_Texture *tex_pipe;
-        SDL_Texture *tex_numbers[10];
-        SDL_Texture* tex_gameover;
-        SDL_Texture* tex_getreddy;
-        SDL_Texture* tex_guild;
-        SDL_Texture* tex_score;
-        SDL_Texture* tex_pause;
-        SDL_Texture* tex_resume;
-        SDL_Texture* tex_vang;
-        SDL_Texture* tex_bac;
-        SDL_Texture* tex_dong;
-        SDL_Texture* tex_dung;
+public:
+    SDL_Texture *tex_back1;
+    SDL_Texture *tex_back2;
+    SDL_Texture *tex_back3;
+    SDL_Texture *tex_back4;
 
-        TTF_Font* font;
+    SDL_Texture *tex_ground;
+    SDL_Texture *tex_player1Up;
+    SDL_Texture *tex_player1Mid;
+    SDL_Texture *tex_player1Down;
 
-        Mix_Chunk* die;
-        Mix_Chunk* hit;
-        Mix_Chunk* swooshing;
-        Mix_Chunk* wing;
+    SDL_Texture *tex_pipe;
+    SDL_Texture *tex_numbers[10];
+    SDL_Texture *tex_gameover;
+    SDL_Texture *tex_getreddy;
+    SDL_Texture *tex_guild;
+    SDL_Texture *tex_score;
+    SDL_Texture *tex_pause;
+    SDL_Texture *tex_resume;
+    SDL_Texture *tex_vang;
+    SDL_Texture *tex_bac;
+    SDL_Texture *tex_dong;
+    SDL_Texture *tex_dung;
 
-        bool isRunning;
-        bool gamePaused;
-        bool pausedButtonClicked;
+    TTF_Font *font;
 
-        Game(const char *title, int _width, int _height);
-        
-        void Start();
-        void Close();
-        void update(bool jump, float elapsedTime, bool &gameover);
-        void handleEvent(SDL_Event& event, bool& pausedButtonClicked, bool& gamePaused);
-        void render();
-        void gameOver();
-        void init();
-    private:
-        SDL_Renderer *renderer;
-        SDL_Window *window;
-        
+    Mix_Chunk *die;
+    Mix_Chunk *hit;
+    Mix_Chunk *swooshing;
+    Mix_Chunk *wing;
 
-        SDL_Event event;
+    bool isRunning;
+    bool gamePaused;
+    bool pausedButtonClicked;
 
-        Bird *bird;
+    Game(const char *title, int _width, int _height);
 
-        std::list<Pipe*> pipes;
+    void Start();
+    void Close();
+    void update(bool jump, float elapsedTime, bool &gameover);
+    void handleEvent(SDL_Event &event, bool &pausedButtonClicked, bool &gamePaused);
+    void render();
+    void gameOver();
+    void init();
 
-        int ground1, ground2;
-        int highScore; 
-        bool gameStarted, gameover;
+private:
+    SDL_Renderer *renderer;
+    SDL_Window *window;
 
-        void loadTextures();
+    SDL_Event event;
+
+    Bird *bird;
+
+    std::list<Pipe *> pipes;
+
+    int ground1, ground2;
+    int highScore;
+    bool gameStarted, gameover;
+
+    void loadTextures();
 };
