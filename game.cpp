@@ -2,6 +2,7 @@
 
 Game::Game(const char *title, int width, int height)
 {
+    
     window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_SHOWN);
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
@@ -20,6 +21,7 @@ Game::Game(const char *title, int width, int height)
 
 void Game::init()
 {
+    
     if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
     {
         printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
@@ -58,7 +60,8 @@ void Game::init()
 
 void Game::Start()
 {
-    // initialize everything before the game starts
+
+    bird->coll=45; 
     init();
     std::ifstream file("highscore.txt");
     if (file.is_open())
@@ -67,16 +70,14 @@ void Game::Start()
         file.close();
     }
     SDL_RenderClear(renderer);
-    // background
-    SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
+    
+    SDL_RenderCopy(renderer, tex_back1, NULL, NULL);
 
-    // pipes
     for (Pipe *pipe : pipes)
     {
         pipe->render(renderer, tex_pipe);
     }
 
-    // ground
     SDL_Rect dstrect4 = (SDL_Rect){ground1, HEIGHT - GROUND_HEIGHT, WIDTH, GROUND_HEIGHT};
     SDL_RenderCopy(renderer, tex_ground, NULL, &dstrect4);
     SDL_Rect dstrect5 = (SDL_Rect){ground2, HEIGHT - GROUND_HEIGHT, WIDTH, GROUND_HEIGHT};
@@ -94,7 +95,7 @@ void Game::Start()
 
     auto t1 = std::chrono::system_clock::now();
     auto t2 = t1;
-    // main game loop
+    
     while (isRunning)
     {
         t1 = t2;
@@ -133,7 +134,7 @@ void Game::Start()
 
         if (pausedButtonClicked == true)
         {
-            gamePaused = !gamePaused; // Chuyển trạng thái gamePaused
+            gamePaused = !gamePaused; 
             pausedButtonClicked = false;
         }
     }
@@ -149,21 +150,40 @@ void Game::update(bool jump, float elapsedTime, bool &gameover)
     {
         auto p = *it;
         int pipeSpeed = PIPE_V;
-        if (bird->score >= 8 && bird->score <= 15)
+        if (bird->score >= 10 && bird->score <= 19)
         {
             pipeSpeed = PIPE_V + 1;
+            if(bird->coll==40){
+                bird->coll =35;
+            }
         }
-        else if (bird->score >= 16 && bird->score <= 23)
+        else if (bird->score >= 20 && bird->score <= 29)
         {
             pipeSpeed = PIPE_V + 2;
+            if(bird->coll==40){
+                bird->coll =23;
+            }
         }
-        else if (bird->score >= 24 && bird->score <= 31)
+        else if (bird->score >= 30 && bird->score <= 39)
         {
             pipeSpeed = PIPE_V + 3;
+            if(bird->coll==40){
+                bird->coll =15;
+            }
         }
-        else if (bird->score >= 31 && bird->score <= 50)
+        else if (bird->score >= 40 && bird->score <= 49)
         {
             pipeSpeed = PIPE_V + 4;
+            if(bird->coll==40){
+                bird->coll =10;
+            }
+        }
+        else if (bird->score >= 50)
+        {
+            pipeSpeed = PIPE_V + 5;
+            if(bird->coll==40){
+                bird->coll =5;
+            }
         }
 
         p->bottom_dst.x -= pipeSpeed;
@@ -187,11 +207,13 @@ void Game::update(bool jump, float elapsedTime, bool &gameover)
         {
             ++it;
         }
+        
         if (bird->collisionDetector(p))
         {
             Mix_PlayChannel(-1, hit, 0);
             gameover = true;
         }
+        
     }
 
     ground1 -= PIPE_V;
@@ -209,40 +231,36 @@ void Game::gameOver()
 {
     SDL_RenderClear(renderer);
 
-    // background
-    if ((bird->score >= 0 && bird->score <= 7) || (bird->score >= 24 && bird->score <= 31) || (bird->score >= 41 && bird->score <= 55))
+    if ((bird->score >= 0 && bird->score <= 9) || (bird->score >= 30 && bird->score <= 39))
     {
-        SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_back1, NULL, NULL);
     }
-    else if ((bird->score >= 8 && bird->score <= 15) || (bird->score >= 32 && bird->score <= 39) || (bird->score >= 56 && bird->score <= 63))
+    else if ((bird->score >= 10 && bird->score <= 19) || (bird->score >= 40 && bird->score <= 49))
     {
-        SDL_RenderCopy(renderer, tex_backgroundA, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_back2, NULL, NULL);
     }
     else
     {
-        SDL_RenderCopy(renderer, tex_backgroundN, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_back3, NULL, NULL);
     }
 
-    // pipes
     for (auto pipe : pipes)
     {
         pipe->render(renderer, tex_pipe);
     }
 
-    // ground
     SDL_Rect dstrect4 = (SDL_Rect){ground1, HEIGHT - GROUND_HEIGHT, WIDTH, GROUND_HEIGHT};
     SDL_RenderCopy(renderer, tex_ground, NULL, &dstrect4);
     SDL_Rect dstrect5 = (SDL_Rect){ground2, HEIGHT - GROUND_HEIGHT, WIDTH, GROUND_HEIGHT};
     SDL_RenderCopy(renderer, tex_ground, NULL, &dstrect5);
 
     bird->render();
-    Mix_PlayChannel(-1, die, 0); // Phát âm thanh die
+    Mix_PlayChannel(-1, die, 0); 
 
     if (bird->score > highScore)
     {
         highScore = bird->score;
 
-        // Lưu high score vào file
         std::ofstream file("highscore.txt");
         if (file.is_open())
         {
@@ -251,15 +269,14 @@ void Game::gameOver()
         }
     }
     gameStarted = false;
-    SDL_Rect dstrect = (SDL_Rect){(WIDTH - 200) / 2, HEIGHT / 3, 200, 50};
+    SDL_Rect dstrect = (SDL_Rect){(WIDTH-350) / 2, HEIGHT / 6, 400, 100};
     SDL_RenderCopy(renderer, tex_gameover, NULL, &dstrect);
-    SDL_Rect dstrect2 = (SDL_Rect){(WIDTH - 300) / 2, HEIGHT / 2 - 25, 289, 131};
+    SDL_Rect dstrect2 = (SDL_Rect){(WIDTH - 350) / 2, HEIGHT /3, 400, 140};
     SDL_RenderCopy(renderer, tex_score, NULL, &dstrect2);
 
-    // render score
     if (bird->score > 9)
     {
-        SDL_Rect dstrectb = (SDL_Rect){WIDTH / 2 + 70, 330, 20, 26};
+        SDL_Rect dstrectb = (SDL_Rect){WIDTH / 2+ 130, 250, 20, 26};
         int tens_digit = bird->score / 10 % 10;
         int ones_digit = bird->score % 10;
         SDL_RenderCopy(renderer, tex_numbers[tens_digit], NULL, &dstrectb);
@@ -268,14 +285,13 @@ void Game::gameOver()
     }
     else
     {
-        SDL_Rect dstrectb = (SDL_Rect){WIDTH / 2 + 70, 330, 20, 26};
+        SDL_Rect dstrectb = (SDL_Rect){WIDTH / 2 + 140, 250, 20, 26};
         SDL_RenderCopy(renderer, tex_numbers[bird->score], NULL, &dstrectb);
     }
 
-    // render highscore
     if (highScore > 9)
     {
-        SDL_Rect dstrecta = (SDL_Rect){WIDTH / 2 + 70, 390, 20, 26};
+        SDL_Rect dstrecta = (SDL_Rect){WIDTH/1.5+15, 310, 20, 26};
         int tens_digit = highScore / 10 % 10;
         int ones_digit = highScore % 10;
         SDL_RenderCopy(renderer, tex_numbers[tens_digit], NULL, &dstrecta);
@@ -284,24 +300,23 @@ void Game::gameOver()
     }
     else
     {
-        SDL_Rect dstrecta = (SDL_Rect){WIDTH / 2 + 70, 390, 20, 26};
+        SDL_Rect dstrecta = (SDL_Rect){WIDTH /1.5+25, 310, 20, 26};
         SDL_RenderCopy(renderer, tex_numbers[highScore], NULL, &dstrecta);
     }
 
-    // reder huy chuong
     if (bird->score >= 0 && bird->score <= 5)
     {
-        SDL_Rect rectcu = {WIDTH / 2 - 125, 340, 60, 60};
+        SDL_Rect rectcu = {WIDTH / 3-15, 260, 70, 70};
         SDL_RenderCopy(renderer, tex_dong, NULL, &rectcu);
     }
     else if (bird->score > 5 && bird->score <= 10)
     {
-        SDL_Rect rectsliver = {WIDTH / 2 - 125, 340, 60, 60};
+        SDL_Rect rectsliver = {WIDTH / 3-15, 260, 70, 70};
         SDL_RenderCopy(renderer, tex_bac, NULL, &rectsliver);
     }
     else
     {
-        SDL_Rect rectgold = {WIDTH / 2 - 125, 340, 60, 60};
+        SDL_Rect rectgold = {WIDTH / 3-15, 260, 70, 70};
         SDL_RenderCopy(renderer, tex_vang, NULL, &rectgold);
     }
 
@@ -337,27 +352,23 @@ void Game::render()
 {
     SDL_RenderClear(renderer);
 
-    // background
-    if ((bird->score >= 0 && bird->score <= 7) || (bird->score >= 24 && bird->score <= 31) || (bird->score >= 41 && bird->score <= 55))
+    if ((bird->score >= 0 && bird->score <= 9) || (bird->score >= 30 && bird->score <= 39))
     {
-        SDL_RenderCopy(renderer, tex_backgroundD, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_back1, NULL, NULL);
     }
-    else if ((bird->score >= 8 && bird->score <= 15) || (bird->score >= 32 && bird->score <= 39) || (bird->score >= 56 && bird->score <= 63))
+    else if ((bird->score >= 10 && bird->score <= 19) || (bird->score >= 40 && bird->score <= 49))
     {
-        SDL_RenderCopy(renderer, tex_backgroundA, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_back2, NULL, NULL);
     }
     else
     {
-        SDL_RenderCopy(renderer, tex_backgroundN, NULL, NULL);
+        SDL_RenderCopy(renderer, tex_back3, NULL, NULL);
     }
 
-    // pipes
     for (auto pipe : pipes)
     {
         pipe->render(renderer, tex_pipe);
     }
-
-    // score
     if (bird->score > 9)
     {
         SDL_Rect dstrect = (SDL_Rect){WIDTH / 2, 100, 40, 52};
@@ -373,21 +384,18 @@ void Game::render()
         SDL_RenderCopy(renderer, tex_numbers[bird->score], NULL, &dstrect);
     }
 
-    // ground
     SDL_Rect dstrect4 = (SDL_Rect){ground1, HEIGHT - GROUND_HEIGHT, WIDTH, GROUND_HEIGHT};
     SDL_RenderCopy(renderer, tex_ground, NULL, &dstrect4);
     SDL_Rect dstrect5 = (SDL_Rect){ground2, HEIGHT - GROUND_HEIGHT, WIDTH, GROUND_HEIGHT};
     SDL_RenderCopy(renderer, tex_ground, NULL, &dstrect5);
 
-    // player
     bird->render();
-
-    // luân phiên reder hai nút pause và resume
+    
     if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT && event.button.x >= 10 && event.button.x <= 45 && event.button.y >= 10 && event.button.y <= 45)
         pausedButtonClicked = true;
     if (pausedButtonClicked == true)
     {
-        gamePaused = !gamePaused; // Chuyển trạng thái gamePaused
+        gamePaused = !gamePaused;
         pausedButtonClicked = false;
     }
     if (gamePaused)
@@ -408,14 +416,11 @@ void Game::render()
 
 void Game::loadTextures()
 {
-    tex_backgroundD = IMG_LoadTexture(renderer, "image/background-winter.png");
-    tex_backgroundN = IMG_LoadTexture(renderer, "image/background-night.png");
-    tex_backgroundA = IMG_LoadTexture(renderer, "image/background-afternoon.png");
+    tex_back1 = IMG_LoadTexture(renderer, "image/back1.png");
+    tex_back2 = IMG_LoadTexture(renderer, "image/back2.png");
+    tex_back3 = IMG_LoadTexture(renderer, "image/back3.png");
+    
     tex_pipe = IMG_LoadTexture(renderer, "image/pipe.png");
-
-    // tex_player1Mid = IMG_LoadTexture(renderer, "image/blue-mid.png");
-    // tex_player1Up = IMG_LoadTexture(renderer, "image/purple-up.png");
-    // tex_player1Down = IMG_LoadTexture(renderer, "image/yellow-down.png");
 
     tex_player1Mid = IMG_LoadTexture(renderer, "image/blue-mid.png");
     tex_player1Up = IMG_LoadTexture(renderer, "image/yellow-up.png");
@@ -439,7 +444,7 @@ void Game::loadTextures()
     }
 
     font = TTF_OpenFont("Arial.ttf", 36);
-    SDL_Color textColor = {255, 255, 255}; // màu trắng
+    SDL_Color textColor = {255, 255, 255};
     SDL_Surface *surface1 = TTF_RenderText_Solid(font, "SPACE or CLICK to START !!!", textColor);
     tex_guild = SDL_CreateTextureFromSurface(renderer, surface1);
     SDL_FreeSurface(surface1);
