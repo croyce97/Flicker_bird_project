@@ -19,6 +19,8 @@ class Bird
         int animationFrames;
     public:
         int score;
+        int coll=45;
+
         Bird(SDL_Texture *up, SDL_Texture *mid, SDL_Texture *down, SDL_Renderer *renderer);
         void init();
         void render();
