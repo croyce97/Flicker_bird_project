@@ -32,7 +32,7 @@ Link: https://github.com/libsdl-org/SDL/releases/tag/release-2.30.6
 * Đổi background theo từng mức điểm, giúp người chơi cảm thâý bớt nhàm chán so với chỉ 1 hình nền.
 * Tăng tốc chú chim theo từng mức điểm, giúp người chơi cảm thấy thú vị và thử thách hơn.
 * Khi chú chim vượt quá màn hình(đâm xuống đất hoặc lên trời) chú chim sẽ không chết như bản gốc mà sẽ xuất hiện ở phần cạnh đối diện với nó.
-* Chú chim sẽ có 1 mạng, khi va phải cột lần đầu tiên sẽ không chết và có âm thanh cảnh báo.
+* Chú chim sẽ có 2 mạng, khi va phải cột lần đầu tiên sẽ không chết và có âm thanh cảnh báo.
 * Hệ thống huy chương theo từng mức điểm bạn đạt được.
 
 ## Các thành phần trong game
