@@ -96,6 +96,21 @@ Link: https://github.com/libsdl-org/SDL/releases/tag/release-2.30.6
 ## Một số hình ảnh trong game
 <img src="https://github.com/croyce97/BTL_LTNC/blob/main/image/Demo1.png" alt="Ảnh mô tả" width="400" height="400">  <img src="https://github.com/croyce97/BTL_LTNC/blob/main/image/Demo2.png" alt="Ảnh mô tả" width="400" height="400">  <img src="https://github.com/croyce97/BTL_LTNC/blob/main/image/Demo3.png" alt="Ảnh mô tả" width="400" height="400">  <img src="https://github.com/croyce97/BTL_LTNC/blob/main/image/Demo4.png" alt="Ảnh mô tả" width="400" height="400">
 
+## Source code
+* image: bao gồm các hình ảnh được sử dụng trong trò chơi
+* sound: bao gồm các âm thanh được sử dụng trong trò chơi.
+* defs.h: dùng để chứa các định nghĩa, hằng số, và các kiểu dữ liệu dùng chung cho toàn bộ dự án game.
+* pipe.h: chứa các khai báo liên quan đến lớp hoặc cấu trúc để quản lý các đối tượng "pipe" trong trò chơi.
+* bird.h: chứa các khai báo liên quan đến lớp hoặc cấu trúc để quản lý các đối tượng "bird" trong trò chơi.
+* game.h: chứa các định nghĩa lớp Game và các thành phần chính liên quan đến việc quản lý và điều khiển toàn bộ trò chơi, khai báo và định nghĩa cần thiết để quản lý các đối tượng game, xử lý logic, và tương tác với người dùng.
+* bird.cpp: chứa phần triển khai của các phương thức và chức năng liên quan đến lớp Bird đã được định nghĩa trong bird.h.
+* game.cpp: chứa phần triển khai của các phương thức đã được khai báo trong file game.h, quản lý vòng lặp trò chơi, xử lý logic, cập nhật trạng thái, và vẽ các đối tượng lên màn hình,...
+* main.cpp: chứa hàm main, là điểm bắt đầu của chương trình. File này sẽ khởi tạo trò chơi, điều khiển vòng lặp trò chơi, và kết thúc chương trình khi trò chơi dừng lại.
+* highscore.txt: file ghi lại điểm cao trong các lần chơi.
+* arrial.ttf: phông chữ được sử dụng trong trò chơi.
+* Makefile: giúp tự động hóa quá trình biên dịch và liên kết các tệp mã nguồn thành một chương trình thực thi.
+
+
 ## Các công cụ và kiến thức sử dụng để làm game
 * Ngôn ngữ lập trình C/C++
 * Thư viện SDL/SDL2
@@ -114,7 +129,6 @@ Link: https://github.com/libsdl-org/SDL/releases/tag/release-2.30.6
 
 ## Link demo game
 Link: https://www.youtube.com/watch?v=U-UFjZ9YD0Q
-
 
 
 
