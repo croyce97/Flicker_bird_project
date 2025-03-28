@@ -127,8 +127,6 @@ Link: https://github.com/libsdl-org/SDL/releases/tag/release-2.30.6
 * Âm thanh: https://mixkit.co/
 * Mã nguồn tham khảo: https://github.com/BlueHephaestus/flappy-bird-barebones
 
-## Link demo game
-Link: https://www.youtube.com/watch?v=U-UFjZ9YD0Q
 
 
 
